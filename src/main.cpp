@@ -40,4 +40,28 @@ void loop() {
         stickY = map(btReceive[2],0, 248, 110, -110 );
         //Serial.printf("Direction= %d // Stick X= %d // Stick Y=%d\n", btReceive[0], stickX, stickY); */
     }
+
+/*
+	//Avant
+	moteurAvGauche.speed(vitesse);
+	moteurAvDroite.speed(vitesse);
+	moteurArGauche.speed(vitesse);
+	moteurArDroite.speed(vitesse);
+	delay(3000);
+	moteurAvGauche.stop();
+	moteurAvDroite.stop();	
+	moteurArGauche.stop();
+	moteurArDroite.stop();	
+
+	//Arriere
+	moteurAvGauche.speed(-vitesse);
+	moteurAvDroite.speed(-vitesse);
+	moteurArGauche.speed(-vitesse);
+	moteurArDroite.speed(-vitesse);
+	delay(3000);
+	moteurAvGauche.stop();
+	moteurAvDroite.stop();	
+	moteurAvGauche.stop();
+	moteurAvDroite.stop();	
+*/
 }
