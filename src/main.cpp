@@ -4,24 +4,25 @@
 BluetoothSerial SerialBT;
 //                      Pilotage,  Trim,     Joystick X, Joystick Y                        
 uint8_t btReceive[4] = {0,         0,        0,         0};
-
+/*
 #include <L298N.h>
 Moteur moteurAvGauche, moteurAvDroite, moteurArGauche, moteurArDroite;
 const uint16_t vitesse = 255;
-
+*/
 // Formated data
 int16_t stickX= 0, stickY=0;
 
 void setup() {
 // Initilization of the Bluetooth server
+	Serial.println("SerialBT init");
     SerialBT.begin("MSE-6");
 
 // Initialization of motors
-	moteurAvGauche.init(2,   4,  3); // IN1, IN2, ENA
+/*	moteurAvGauche.init(2,   4,  3); // IN1, IN2, ENA
 	moteurAvDroite.init(5,   7,  6); // IN1, IN2, ENA
 	moteurArGauche.init(8,   9, 10); // IN1, IN2, ENA
 	moteurArDroite.init(12, 13, 11); // IN1, IN2, ENA    
-
+*/
 // Initialization of Serial debug
     Serial.begin(9600);
 }
