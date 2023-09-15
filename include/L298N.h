@@ -4,13 +4,14 @@ struct Moteur {
 	uint8_t pinIN1;
 	uint8_t pinIN2;
 	uint8_t pinENA;
+	uint8_t deadZone;
 
-	void init( uint8_t PIN_IN1, uint8_t PIN_IN2, uint8_t PIN_ENA) {
-		pinIN1 = PIN_IN1;
+	void init( uint8_t _pinIN1, uint8_t _pinIN2, uint8_t _pinENA) {
+		pinIN1 = _pinIN1;
 		pinMode(pinIN1, OUTPUT);
-		pinIN2 = PIN_IN2;
+		pinIN2 = _pinIN2;
 		pinMode(pinIN2, OUTPUT);
-		pinENA = PIN_ENA;
+		pinENA = _pinENA;
 		pinMode(pinENA, OUTPUT);	
 	}
 
