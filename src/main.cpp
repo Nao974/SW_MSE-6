@@ -40,14 +40,18 @@ void loop() {
         vitesseBase = map(btReceive[3],0, 250, 255, -255 );
 		 //Serial.printf("Vitesse base= %d",vitesseBase);
 
-			vitesseGauche= 255;//vitesseBase - directionBase;
-			vitesseDroite= -255;//vitesseBase + directionBase;
+		vitesseGauche= vitesseBase + directionBase;
+		vitesseDroite= vitesseBase - directionBase;
+
+		if ( vitesseGauche > 255 ) vitesseGauche = 255;
+		if ( vitesseGauche < -255 ) vitesseGauche = -255;
+		if ( vitesseDroite > 255 ) vitesseDroite = 255;
+		if ( vitesseDroite < -255 ) vitesseDroite = -255;
 
 		moteurAvGauche.speed(vitesseGauche);
 		moteurAvDroite.speed(vitesseDroite);
 		moteurArGauche.speed(vitesseGauche);
 		moteurArDroite.speed(vitesseDroite);
-
        // Serial.printf("Moteurs Gauche= %d // Moteurs Droit=%d\n", vitesseGauche, vitesseDroite);
     }
 
