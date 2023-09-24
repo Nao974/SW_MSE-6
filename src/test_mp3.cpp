@@ -3,8 +3,8 @@
 
 // Alternatively initialise on another serial port.
 // https://circuits4you.com/2018/12/31/esp32-hardware-serial2-example/
-const uint8_t MP3RX2 = 10;
-const uint8_t MP3TX2 = 11;
+const uint8_t MP3RX2 = 22;
+const uint8_t MP3TX2 = 23;
 DY::Player player(&Serial2);
 
 
