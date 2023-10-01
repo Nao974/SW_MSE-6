@@ -9,7 +9,7 @@ const uint8_t MP3TX2 = 23;
 // YPlayer Arduino: https://github.com/SnijderC/dyplayer
 DY::Player player(&Serial2);
 
-#define DEBUG   true
+#define DEBUG   false
 
 void setup() {
     // Init serial for comannd MP3 Player
