@@ -26,7 +26,7 @@ struct Moteur {
 			digitalWrite(pinIN2, HIGH);	
 			vitesse = - vitesse;	
 		}
-//		vitesse = map(vitesse, 0,255, deadZone, 255);
+		vitesse = map(vitesse, 0,255, deadZone, 255);
 		analogWrite(pinENA, vitesse);
 		}				
 

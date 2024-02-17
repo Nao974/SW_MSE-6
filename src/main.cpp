@@ -14,7 +14,7 @@ int16_t vitesseBase=0, directionBase=0, vitesseGauche= 0, vitesseDroite=0;
 void setup() {
 // Initialization of Serial debug
     #if DEBUG== true 
-		Serial.begin(115200);
+		Serial.begin(9600);
 	#endif
 
 // Initilization of the Bluetooth server
