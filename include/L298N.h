@@ -4,7 +4,7 @@ struct Moteur {
 	uint8_t pinIN1;
 	uint8_t pinIN2;
 	uint8_t pinENA;
-	uint8_t deadZone;
+	uint16_t deadZone;
 
 	void init( uint8_t _pinIN1, uint8_t _pinIN2, uint8_t _pinENA, uint8_t _deadZone) {
 		pinIN1 = _pinIN1;
