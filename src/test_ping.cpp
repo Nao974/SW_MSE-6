@@ -13,6 +13,7 @@ void setup() {
 
 void loop() {
     Serial.print("sonarLeft="); Serial.print(sonarLeft.ping_cm()); Serial.println("cm ");
+    delay(50);
     Serial.print("sonarRight="); Serial.print(sonarRight.ping_cm()); Serial.println("cm ");
-    delay(1000); // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
+    delay(500); // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
 }
