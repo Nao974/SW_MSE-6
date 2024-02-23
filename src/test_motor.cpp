@@ -34,35 +34,32 @@ void setup() {
 }
 
 void loop() {
-	// if reception of the 3 data sent by bluetooth
-    if ( SerialBT.available() >= 4) {
-        btReceive[0] = SerialBT.read(); // Pilotage
-        btReceive[1] = SerialBT.read(); // Trim
-        btReceive[2] = SerialBT.read(); // Joystick X Direction
-        btReceive[3] = SerialBT.read(); // Joystick Y Vitesse
 
-		// Recalculates data in motor range
-        directionBase = map(btReceive[2],0, 250, -255, 255 )+btReceive[1];
-        vitesseBase = map(btReceive[3],0, 250, 255, -255 );
+	//btReceive[2] = 125;
+	//btReceive[3] = 188;
 
-		vitesseGauche= vitesseBase + directionBase;
-		vitesseDroite= vitesseBase - directionBase;
+	// Recalculates data in motor range
+	directionBase = 0; // map(btReceive[2],0, 250, -255, 255 )+btReceive[1];
+	vitesseBase = 125; //map(btReceive[3],0, 250, 255, -255 );
 
-		if ( vitesseGauche > 255 ) vitesseGauche = 255;
-		if ( vitesseGauche < -255 ) vitesseGauche = -255;
-		if ( vitesseDroite > 255 ) vitesseDroite = 255;
-		if ( vitesseDroite < -255 ) vitesseDroite = -255;
+	vitesseGauche= vitesseBase + directionBase;
+	vitesseDroite= vitesseBase - directionBase;
 
-		#if DEBUG == true
-			Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
-			Serial.printf("Vitesse base= %d, direction base=%d",vitesseBase,directionBase);
-			Serial.printf("Moteurs Gauche= %d // Moteurs Droit=%d\n", vitesseGauche, vitesseDroite);
-		#endif
+	if ( vitesseGauche > 255 ) vitesseGauche = 255;
+	if ( vitesseGauche < -255 ) vitesseGauche = -255;
+	if ( vitesseDroite > 255 ) vitesseDroite = 255;
+	if ( vitesseDroite < -255 ) vitesseDroite = -255;
 
-		moteurAvGauche.speed(vitesseGauche);
-		moteurAvDroite.speed(vitesseDroite);
-		moteurArGauche.speed(vitesseGauche);
-		moteurArDroite.speed(vitesseDroite);
-    }
+	#if DEBUG == true
+		Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
+		Serial.printf("Vitesse base= %d, direction base=%d",vitesseBase,directionBase);
+		Serial.printf("Moteurs Gauche= %d // Moteurs Droit=%d\n", vitesseGauche, vitesseDroite);
+	#endif
+
+	moteurAvGauche.speed(vitesseGauche);
+	moteurAvDroite.speed(vitesseDroite);
+	moteurArGauche.speed(vitesseGauche);
+	moteurArDroite.speed(vitesseDroite);
+
 
 }
