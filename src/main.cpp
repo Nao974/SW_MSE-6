@@ -14,6 +14,11 @@ Servo servoDir;
 const uint8_t SERVO_MIDDLE = 90, SERVO_MAX = 120, SERVO_MIN = 60;
 int16_t directionBase;
 
+#include <NewPing.h>
+const uint16_t SONAR_MAX_DISTANCE=1000; // Maximum distance (in cm) to ping.
+NewPing sonarLeft( 32, 34, SONAR_MAX_DISTANCE);  // Left sensor (trigger pin, echo pin, and max distance to ping).
+NewPing sonarRight(23, 35, SONAR_MAX_DISTANCE);  // Right sensor
+
 
 #define DEBUG	false
 
