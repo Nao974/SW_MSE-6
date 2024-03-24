@@ -11,7 +11,6 @@ NewPing sonar[SONAR_NUMBER]= {
     NewPing( 17, 16, SONAR_MAX_DISTANCE),  // Left Back
     NewPing( 23, 35, SONAR_MAX_DISTANCE),  // Right Front
     NewPing( 19, 18, SONAR_MAX_DISTANCE)  // Right Back
-
 };
 
 void setup() {
