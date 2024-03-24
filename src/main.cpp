@@ -82,6 +82,15 @@ void loop() {
 			directionBase = map(btReceive[2],250, 0, SERVO_MIN, SERVO_MAX ) + btReceive[1];
 			vitesseBase = map(btReceive[3],0, 250, 255, -255 );
 
+			if ( ( sonarStatus[0] == 1 || sonarStatus[1] == 1) && vitesseBase > 0 )
+				vitesseBase = vitesseBase / 2;
+			if ( ( sonarStatus[2] == 1 || sonarStatus[3] == 1) && vitesseBase < 0 )
+				vitesseBase = vitesseBase / 2;
+			if ( ( sonarStatus[0] == 2 || sonarStatus[1] == 2) && vitesseBase > 0 )
+				vitesseBase = 0;
+			if ( ( sonarStatus[2] == 2 || sonarStatus[3] == 2) && vitesseBase < 0 )
+				vitesseBase = 0;
+
 			#if DEBUG == true
 				Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
 				Serial.printf("Vitesse base= %d, direction base=%d \n",vitesseBase,directionBase);
