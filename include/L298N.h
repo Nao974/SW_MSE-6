@@ -1,5 +1,5 @@
 #include <arduino.h>
-const uint8_t VITESSE_MAX = 250; // between 0 and 255
+const uint8_t VITESSE_MAX = 255; // between 0 and 255
 
 struct Moteur {
 	uint8_t pinIN1;
