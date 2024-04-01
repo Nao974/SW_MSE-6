@@ -30,7 +30,10 @@ NewPing sonar[SONAR_NUMBER]= {
     NewPing( 19, 18, SONAR_MAX_DISTANCE)  // Right Back
 };
 
-uint8_t drivingMode = true;
+
+// General
+uint8_t drivingMode = true, autonomousState= 1;
+uint32_t debugLastMillis, autonomousLastMillis, autonomousWaitLastMillis, autonomousWait;
 #define DEBUG	false
 
 void setup() {
@@ -78,6 +81,7 @@ void setup() {
 
 // General
 	drivingMode = true; // manual control at start-up
+	autonomousState = 1; //1= forward, 2= back, 3= back wait because obstacle
 }
 
 void loop() {
@@ -104,55 +108,62 @@ void loop() {
 
 			#if DEBUG == true
 				Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
-				Serial.printf("Vitesse base= %d, direction base=%d \n",vitesseBase,directionBase);
 			#endif
 		}
 	}
 
-	if ( !drivingMode ) {
-		if ( sonarStatus[0] == 1 ) { // Left Front
-			vitesseBase = VITESSE_MAX;
-			directionBase = SERVO_DROITE;
-		}
-		else if ( sonarStatus[2] == 1 ) {// Right Front
-			vitesseBase = VITESSE_MAX;
-			directionBase = SERVO_GAUCHE;
-		}
-		else if ( sonarStatus[0] == 2 ) { // Left Front
-			directionBase = SERVO_DROITE;
-			reculeDuree = 1000;
-			reculeLastMillis = millis();
-			while (reculeDuree > 0) {
-				UpdateSonars_SendBT(drivingMode);
-				if ( sonarStatus[1] == 0 && sonarStatus[3] == 0 ) {
-					vitesseBase = -VITESSE_MIN;
-					reculeDuree = reculeDuree - (millis() - reculeLastMillis);
-					reculeLastMillis = millis();
+	if ( !drivingMode ) { // autonomous mode
+
+		switch ( autonomousState) {
+			case 1: { // Forward
+				directionBase = SERVO_MIDDLE;
+				vitesseBase = VITESSE_MIN;
+
+				if ( sonarStatus[0] == 1 ) { // Left Front
+					directionBase = SERVO_DROITE;
 				}
-				else
-					vitesseBase = 0;
-			}
-		}		
-		else if ( sonarStatus[3] == 2 ) { // Left Front
-			directionBase = SERVO_GAUCHE;
-			reculeDuree = 1000;
-			reculeLastMillis = millis();
-			while (reculeDuree > 0) {
-				UpdateSonars_SendBT(drivingMode);
-				if ( sonarStatus[1] == 0 && sonarStatus[3] == 0 ) {
-					vitesseBase = -VITESSE_MIN;
-					reculeDuree = reculeDuree - (millis() - reculeLastMillis);
-					reculeLastMillis = millis();
+				if ( sonarStatus[2] == 1 ) {// Right Front
+					directionBase = SERVO_GAUCHE;
 				}
-				else
-					vitesseBase = 0;
+				if ( sonarStatus[0] == 2 || sonarStatus[2] == 2 )  {
+					autonomousState = 2;
+					autonomousLastMillis = millis();
+					autonomousWait = 0;
+				}
+				break;
 			}
-		}	
-		else {
-			vitesseBase = VITESSE_MAX;
-			directionBase = SERVO_MIDDLE;
-		}		
+
+			case 2: { // go back
+				if ( millis() > autonomousLastMillis+ autonomousWait + 2000)
+					autonomousState = 1;
+				else {
+					directionBase = SERVO_DROITE;
+					vitesseBase = -VITESSE_MIN;
+					if (sonarStatus[1] == 2 || sonarStatus[3] == 2) { // obstacle at the back
+						vitesseBase = 0;
+						autonomousWaitLastMillis = millis();
+						autonomousState = 3;
+					}
+				}
+				break;
+			}
+
+			case 3: { // obstacle at the back, we wait
+				if (sonarStatus[1] != 2 && sonarStatus[3] != 2) {
+						autonomousWait = autonomousWait + ( millis() - autonomousWaitLastMillis );
+						autonomousState = 2;
+					}
+				else if ( millis() > autonomousLastMillis + 7500 )
+					autonomousState = 1;
+			}
+		}
 	}
+	#if DEBUG == true
+		if ( millis() > debugLastMillis+ 500) {
+			Serial.printf("Vitesse base= %d, direction base=%d \n",vitesseBase,directionBase);
+			debugLastMillis = millis();
+		}
+	#endif
 	turnSecureMode(directionBase);
 	moteurGauche.speed(vitesseBase);
 	moteurDroite.speed(vitesseBase);

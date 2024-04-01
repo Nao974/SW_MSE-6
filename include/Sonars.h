@@ -4,7 +4,7 @@
 
 const uint16_t SONAR_MAX_DISTANCE = 1000; // Maximum distance (in cm) to ping.
 const uint16_t SONAR_LIMIT_ORANGE = 40; // in cm
-const uint16_t SONAR_LIMIT_RED = 25; // in cm
+const uint16_t SONAR_LIMIT_RED = 10; // in cm
 const uint8_t SONAR_NUMBER = 4;
 const uint16_t SONAR_INTERVAL = 50; // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
 uint16_t sonarDistance = 0;
