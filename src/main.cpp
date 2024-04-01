@@ -1,5 +1,10 @@
 #include <Arduino.h>
 
+#include "DYPlayerArduino.h"
+const uint8_t MP3RX2 = 22;
+const uint8_t MP3TX2 = 21;
+DY::Player player(&Serial2);
+
 #include "BluetoothSerial.h"
 BluetoothSerial SerialBT;
 int16_t btReceive[4] = {0, 0,  0, 0}; // Pilotage,  Trim, Joy X / Range Left, Joy Y / Range Right 
@@ -61,6 +66,14 @@ void setup() {
     sonarID = 0;
     sonarLastMillis = millis();
 
+// Initialization MP3 Player
+  
+  Serial2.begin(9600, SERIAL_8N1, MP3RX2, MP3TX2);
+  player.begin();
+  player.setVolume(25); //Set the playback volume between 0 and 30. Default volume if not set: 20
+  player.setCycleMode(DY::PlayMode::Random); // Play all randomly and repeat.
+  player.play();
+
 // General
 	drivingMode = true; // manual control at start-up
 }
@@ -82,19 +95,9 @@ void loop() {
 			directionBase = map(btReceive[2],250, 0, SERVO_MIN, SERVO_MAX ) + btReceive[1];
 			vitesseBase = map(btReceive[3],0, 250, 255, -255 );
 
-			if ( ( sonarStatus[0] == 1 || sonarStatus[1] == 1) && vitesseBase > 0 )
-				vitesseBase = vitesseBase / 2;
-			if ( ( sonarStatus[2] == 1 || sonarStatus[3] == 1) && vitesseBase < 0 )
-				vitesseBase = vitesseBase / 2;
-			if ( ( sonarStatus[0] == 2 || sonarStatus[1] == 2) && vitesseBase > 0 )
-				vitesseBase = 0;
-			if ( ( sonarStatus[2] == 2 || sonarStatus[3] == 2) && vitesseBase < 0 )
-				vitesseBase = 0;
-
 			#if DEBUG == true
 				Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
 				Serial.printf("Vitesse base= %d, direction base=%d \n",vitesseBase,directionBase);
-				//Serial.printf("Moteurs Gauche= %d // Moteurs Droit=%d\n", vitesseGauche, vitesseDroite);
 			#endif
 		}
 	}
