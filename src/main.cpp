@@ -1,5 +1,11 @@
 #include <Arduino.h>
 
+// General
+uint8_t drivingMode = 1, autonomousState= 1, autonomousStateLast= 1;
+int16_t vitesseAutonomous;
+uint32_t debugLastMillis, autonomousLastMillis, autonomousWaitLastMillis, autonomousWait;
+#define DEBUG	false
+
 #include "DYPlayerArduino.h"
 const uint8_t MP3RX2 = 22;
 const uint8_t MP3TX2 = 21;
@@ -29,12 +35,6 @@ NewPing sonar[SONAR_NUMBER]= {
     NewPing( 23, 35, SONAR_MAX_DISTANCE),  // Right Front
     NewPing( 19, 18, SONAR_MAX_DISTANCE)  // Right Back
 };
-
-
-// General
-uint8_t drivingMode = true, autonomousState= 1;
-uint32_t debugLastMillis, autonomousLastMillis, autonomousWaitLastMillis, autonomousWait;
-#define DEBUG	false
 
 void setup() {
 // Initialization of Serial debug
@@ -72,7 +72,6 @@ void setup() {
     sonarLastMillis = millis();
 
 // Initialization MP3 Player
-  
   Serial2.begin(9600, SERIAL_8N1, MP3RX2, MP3TX2);
   player.begin();
   player.setVolume(25); //Set the playback volume between 0 and 30. Default volume if not set: 20
@@ -82,6 +81,7 @@ void setup() {
 // General
 	drivingMode = true; // manual control at start-up
 	autonomousState = 1; //1= forward, 2= back, 3= back wait because obstacle
+	vitesseAutonomous = VITESSE_MIN;
 }
 
 void loop() {
@@ -98,26 +98,26 @@ void loop() {
 		drivingMode = btReceive[0];
 		if ( drivingMode) {
 			// Recalculates data in motor range
-			directionBase = map(btReceive[2],250, 0, SERVO_MIN, SERVO_MAX ) + btReceive[1];
+			directionBase = map(btReceive[2],250, 0, SERVO_MAX, SERVO_MIN ) + btReceive[1];
 			vitesseBase = map(btReceive[3],0, 250, 255, -255 );
-
-			if ( ( sonarStatus[0] == 2 || sonarStatus[2] == 2) && vitesseBase > 0 )
-				vitesseBase = 0;
-			if ( ( sonarStatus[1] == 2 || sonarStatus[3] == 2) && vitesseBase < 0 )
-				vitesseBase = 0;
-
 			#if DEBUG == true
 				Serial.printf("Pilotage= %d // Trim= %d // Joy X= %d // Joy Y=%d\n", btReceive[0], btReceive[1], btReceive[2], btReceive[3]);
+			#endif
+		}
+		else {
+			vitesseAutonomous = btReceive[3];
+			#if DEBUG == true
+				Serial.printf("Vitesse Autonome= %s\n", vitesseAutonomous );
 			#endif
 		}
 	}
 
 	if ( !drivingMode ) { // autonomous mode
-
+		autonomousStateLast = autonomousState;
 		switch ( autonomousState) {
 			case 1: { // Forward
 				directionBase = SERVO_MIDDLE;
-				vitesseBase = VITESSE_MIN;
+				vitesseBase = vitesseAutonomous;
 
 				if ( sonarStatus[0] == 1 ) { // Left Front
 					directionBase = SERVO_DROITE;
@@ -132,13 +132,12 @@ void loop() {
 				}
 				break;
 			}
-
 			case 2: { // go back
 				if ( millis() > autonomousLastMillis+ autonomousWait + 2000)
 					autonomousState = 1;
 				else {
 					directionBase = SERVO_DROITE;
-					vitesseBase = -VITESSE_MIN;
+					vitesseBase = -vitesseAutonomous;
 					if (sonarStatus[1] == 2 || sonarStatus[3] == 2) { // obstacle at the back
 						vitesseBase = 0;
 						autonomousWaitLastMillis = millis();
@@ -147,16 +146,20 @@ void loop() {
 				}
 				break;
 			}
-
 			case 3: { // obstacle at the back, we wait
 				if (sonarStatus[1] != 2 && sonarStatus[3] != 2) {
 						autonomousWait = autonomousWait + ( millis() - autonomousWaitLastMillis );
 						autonomousState = 2;
 					}
-				else if ( millis() > autonomousLastMillis + 7500 )
+				else if ( millis() > autonomousLastMillis + 2500 )
 					autonomousState = 1;
 			}
 		}
+		if ( autonomousStateLast != autonomousState) {
+			SerialBT.print("9");
+            SerialBT.println(autonomousState); 
+		}
+
 	}
 	#if DEBUG == true
 		if ( millis() > debugLastMillis+ 500) {
@@ -165,6 +168,12 @@ void loop() {
 		}
 	#endif
 	turnSecureMode(directionBase);
+	if ( drivingMode == 2 ) {
+		if ( ( sonarStatus[0] == 2 || sonarStatus[2] == 2) && vitesseBase > 0 )
+			vitesseBase = 0;
+		if ( ( sonarStatus[1] == 2 || sonarStatus[3] == 2) && vitesseBase < 0 )
+			vitesseBase = 0;
+			}
 	moteurGauche.speed(vitesseBase);
 	moteurDroite.speed(vitesseBase);
 }

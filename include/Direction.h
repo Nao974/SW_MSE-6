@@ -1,8 +1,8 @@
 #include <ESP32Servo.h>
 
-const uint8_t SERVO_MIDDLE = 90, SERVO_MAX = 120, SERVO_MIN = 60;
+const uint8_t SERVO_MIDDLE = 95, SERVO_MAX = 160, SERVO_MIN = 20;
 extern Servo servoDir;
-const uint8_t SERVO_GAUCHE = SERVO_MAX, SERVO_DROITE = SERVO_MIN;
+const uint8_t SERVO_GAUCHE = SERVO_MIN, SERVO_DROITE = SERVO_MAX;
 
 void turnSecureMode(int16_t angle) {
     if ( angle > SERVO_MAX )
