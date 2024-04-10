@@ -29,12 +29,11 @@ Plan issu du site http://luckyxero.com/droids/mouse-droid-build/ *(dimensions en
 # Construction
 
 La coque a été fabriquée avec :
-*  du carton-plume de XX cm d'épaisseur,
-* colle .....
+*  du carton-plume de 6 mm d'épaisseur,
 * recouvert de plusieurs couches de vernis epoxy
-* Peinture noir ......
+* Peinture noire
 * Décoration sur le dessus : http://www.thingiverse.com/thing:1862673
-* Décoration sur les côtés : ........
+* Décoration sur les côtés : https://www.thingiverse.com/thing:916594
 
 <div align="center"><img alt="Construction carton plume" width="100%" src="./assets/images/fabrication_coque_01.jpg" /></div>
 
