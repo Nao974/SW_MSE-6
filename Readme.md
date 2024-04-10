@@ -1,12 +1,12 @@
 # Mouse Droid MSE-6 StarWars
 
-En collaboration avec l'association [Les Voyageur Des Etoiles] nous avons réalisé une réplique du **Mouse Droid MSE-6** de **StarWars** :
+En collaboration avec l'association [Les Voyageur Des Etoiles] réalisation d'une réplique du **Mouse Droid MSE-6** des films **StarWars** :
 
 <div align="center"><img alt="Image du Robot" width="100%" src="./assets/images/MSE-6_fond-blanc.jpg" /></div> 
 
 *Conçu et produit par Rebaxan Columni pour le compte de l'Empire. De petite taille (moins de 30cm de hauteur), il est muni de quatres roues. Ce modèle est utilisé pour les tâches de maintenance simples et pour le nettoyage des sols.*
 
-
+[![Video Presentation](./assets/images/video_youtube.jpg)](https://youtu.be/cLqNmMH4hsg)
 
 L'objectif du projet est d'avoir un robot pilotable par Smartphone permettant d'accompagner les acteurs dans leurs déambulations lors de salons ou d'animations.
 
@@ -36,20 +36,30 @@ La coque a été fabriquée avec :
 * Décoration sur le dessus : http://www.thingiverse.com/thing:1862673
 * Décoration sur les côtés : ........
 
-<div align="center"><img alt="Construction carton plum" width="100%" src="./assets/images/fabrication_coque_01.jpg" /></div>
+<div align="center"><img alt="Construction carton plume" width="100%" src="./assets/images/fabrication_coque_01.jpg" /></div>
 
-<div align="center"><img alt="Construction carton plum" width="100%" src="./assets/images/fabrication_coque_02.jpg" /></div>
+<div align="center"><img alt="Avec les LEDs" width="100%" src="./assets/images/fabrication_coque_02.jpg" /></div>
 
+<div align="center"><img alt="Base Roulante" width="100%" src="./assets/images/base_roulante.jpg" /></div>
 
 # Pilotage par Smartphone
 
 Télécharger l'application Android [apk]
 
+Vous pouvez également ouvrir le projet directement dans [MIT App Inventor]
+
+<div align="center"><img alt="Splash Screen" width="32%" src="./assets/images/smartphone_screen1.jpg"/>&nbsp;<img alt="Mode Manuel" width="32%" src="./assets/images/smartphone_screen2.jpg"/>&nbsp;<img alt="Mode Autonome" width="32%" src="./assets/images/smartphone_screen3.jpg"/></div> 
+
+# Vidéos diverses
+
+[![Divers Vidéos](./assets/images/videos.jpg)](./assets/videos)
+
 # 
-*[Nao974] v1.0 2024-01*
+*[Nao974] v1.0 2024-04*
 
 [FICHES]: ./FICHES
 [apk]: ./android_apk/MouseDroid_MSE6.apk
+[MIT App Inventor]: https://gallery.appinventor.mit.edu/?galleryid=becb1436-0f10-454d-a0c5-cfbd2a7cbcf6
 
 [Robotic974]:      https://www.facebook.com/robotic974
 [Nao974]:          https://www.youtube.com/@Nao974Robotic
